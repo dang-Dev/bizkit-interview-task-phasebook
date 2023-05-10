@@ -24,7 +24,21 @@ def search_users(args):
     Returns:
         a list of users that match the search parameters
     """
-
     # Implement search here!
+    
+    users = get_users(USERS, args)
+    if users:
+        return users
 
     return USERS
+
+def get_users(users, params):
+    results = []
+    for user in users:
+        score = sum(value in str(user.get(param)) for param, value in params.items())
+        if score > 0:
+            results.append((user, score))
+
+    results.sort(key=lambda x: x[1], reverse=True)
+
+    return [result[0] for result in results]
